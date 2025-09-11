@@ -1,0 +1,27 @@
+defmodule ElixirBookshelf.Book do
+  @moduledoc """
+  The book schema represents a a book record.
+  """
+
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @type t :: %__MODULE__{
+          title: String.t(),
+          word_count: non_neg_integer()
+        }
+
+  @primary_key {:id, UXID, autogenerate: true, prefix: "bk", size: :medium}
+  schema "books" do
+    field :title, :string
+    field :word_count, :integer
+    timestamps(type: :utc_datetime)
+  end
+
+  @doc false
+  def changeset(book, attrs) do
+    book
+    |> cast(attrs, [:title, :word_count])
+    |> validate_required([:title])
+  end
+end
