@@ -33,11 +33,13 @@ defmodule ElixirBookshelf.MixProject do
   defp deps do
     [
       {:bandit, "~> 1.5"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dns_cluster, "~> 0.1.1"},
       {:ecto_sql, "~> 3.10"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:excellent_migrations, "~> 0.1", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.8.0", only: :test},
+      {:faker, "~> 0.19.0-alpha.1", only: :test},
       {:finch, "~> 0.13"},
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.26"},
