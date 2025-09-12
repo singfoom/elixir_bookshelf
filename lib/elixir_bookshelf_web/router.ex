@@ -18,7 +18,7 @@ defmodule ElixirBookshelfWeb.Router do
     pipe_through :browser
 
     get "/", BookController, :index
-    resources "/books", BookController, only: [:index]
+    resources "/books", BookController, only: [:index, :show]
   end
 
   # Other scopes may use custom stacks.

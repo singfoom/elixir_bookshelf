@@ -16,12 +16,16 @@ defmodule ElixirBookshelf.Books do
 
   @spec get_book(String.t()) :: Book.t()
   def get_book(book_id) do
-    Repo.get(Book, book_id)
+    Book
+    |> Repo.get(book_id)
+    |> Repo.preload(:author)
   end
 
   @spec get_book!(String.t()) :: Book.t()
   def get_book!(book_id) do
-    Repo.get!(Book, book_id)
+    Book
+    |> Repo.get!(book_id)
+    |> Repo.preload(:author)
   end
 
   @spec create_book(map) :: {:ok, Book.t()} | {:error, Ecto.Changeset.t()}

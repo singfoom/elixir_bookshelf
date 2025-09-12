@@ -7,4 +7,9 @@ defmodule ElixirBookshelfWeb.BookController do
     books = Books.list_books()
     render(conn, :index, books: books)
   end
+
+  def show(conn, %{"id" => id}) do
+    book = Books.get_book!(id)
+    render(conn, :show, book: book)
+  end
 end
