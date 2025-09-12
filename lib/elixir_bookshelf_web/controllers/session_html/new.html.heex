@@ -1,0 +1,33 @@
+<.flash_group flash={@flash} />
+
+<div class="mx-auto max-w-md px-4 py-10 sm:px-6 lg:px-8">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+      Sign In
+    </h1>
+    <p class="mt-2 text-sm text-gray-600">
+      Access your personal bookshelf
+    </p>
+  </div>
+
+  <.simple_form :let={f} for={%{}} as={:session} action={~p"/session"} method="post">
+    <.input field={f[:email]} type="email" label="Email" required />
+    <.input field={f[:password]} type="password" label="Password" required />
+
+    <:actions>
+      <.button phx-disable-with="Signing in..." class="w-full">
+        Sign In
+      </.button>
+    </:actions>
+  </.simple_form>
+
+  <div class="mt-6 text-center space-y-2">
+    <.link navigate={~p"/register"} class="text-sm text-blue-600 hover:text-blue-500">
+      Don't have an account? Register here
+    </.link>
+    <br/>
+    <.link navigate={~p"/books"} class="text-sm text-blue-600 hover:text-blue-500">
+      Back to Books
+    </.link>
+  </div>
+</div>

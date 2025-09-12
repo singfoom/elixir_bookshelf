@@ -8,6 +8,7 @@ defmodule ElixirBookshelfWeb.Router do
     plug :put_root_layout, html: {ElixirBookshelfWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug ElixirBookshelfWeb.Plugs.Auth
   end
 
   pipeline :api do
@@ -19,6 +20,13 @@ defmodule ElixirBookshelfWeb.Router do
 
     get "/", BookController, :index
     resources "/books", BookController, only: [:index, :show]
+    
+    get "/register", UserController, :new
+    post "/register", UserController, :create
+    
+    get "/session", SessionController, :new
+    post "/session", SessionController, :create
+    delete "/session", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.
