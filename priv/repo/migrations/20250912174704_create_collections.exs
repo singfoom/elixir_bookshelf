@@ -7,8 +7,13 @@ defmodule ElixirBookshelf.Repo.Migrations.CreateCollections do
   def up do
     create_if_not_exists table(:collections, primary_key: false) do
       add :id, :string, primary_key: true
-      add :user_id, :string, null: false
-      add :book_id, :string, null: false
+
+      add :user_id, references(:users, type: :string, on_delete: :delete_all, validate: false),
+        null: false
+
+      add :book_id, references(:books, type: :string, on_delete: :delete_all, validate: false),
+        null: false
+
       add :added_at, :utc_datetime, null: false, default: fragment("now()")
 
       timestamps(type: :utc_datetime)

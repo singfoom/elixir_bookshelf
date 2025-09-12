@@ -3,7 +3,7 @@ defmodule ElixirBookshelf.Factory do
   An ex machina based factory for data in tests
   """
   use ExMachina.Ecto, repo: ElixirBookshelf.Repo
-  alias ElixirBookshelf.{Author, Book}
+  alias ElixirBookshelf.{Author, Book, User, Collection}
 
   def book_factory do
     %Book{
@@ -41,6 +41,23 @@ defmodule ElixirBookshelf.Factory do
           "Robinson",
           "VanderMeer"
         ])
+    }
+  end
+
+  def user_factory do
+    %User{
+      email: sequence(:email, &"user#{&1}@example.com"),
+      password_hash: Bcrypt.hash_pwd_salt("password123"),
+      first_name: Enum.random(["Alice", "Bob", "Carol", "David", "Eve", "Frank"]),
+      last_name: Enum.random(["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia"])
+    }
+  end
+
+  def collection_factory do
+    %Collection{
+      user: build(:user),
+      book: build(:book),
+      added_at: DateTime.utc_now() |> DateTime.truncate(:second)
     }
   end
 end
