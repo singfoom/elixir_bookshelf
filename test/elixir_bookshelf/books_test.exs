@@ -29,13 +29,15 @@ defmodule ElixirBookshelf.BooksTest do
   end
 
   describe "get_book/1" do
-    test "returns the book when it exists" do
+    test "returns the book with author preloaded when it exists" do
       book = insert(:book)
 
       result = Books.get_book(book.id)
 
       assert result.id == book.id
       assert result.title == book.title
+      assert result.author != nil
+      assert Ecto.assoc_loaded?(result.author)
     end
 
     test "returns nil when book does not exist" do
@@ -45,13 +47,15 @@ defmodule ElixirBookshelf.BooksTest do
   end
 
   describe "get_book!/1" do
-    test "returns the book when it exists" do
+    test "returns the book with author preloaded when it exists" do
       book = insert(:book)
 
       result = Books.get_book!(book.id)
 
       assert result.id == book.id
       assert result.title == book.title
+      assert result.author != nil
+      assert Ecto.assoc_loaded?(result.author)
     end
 
     test "raises when book does not exist" do
