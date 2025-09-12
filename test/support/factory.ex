@@ -16,7 +16,8 @@ defmodule ElixirBookshelf.Factory do
           "Anathema",
           "Authority"
         ]),
-      word_count: Enum.random(0..20_000)
+      word_count: Enum.random(0..20_000),
+      author: build(:author)
     }
   end
 

@@ -6,22 +6,35 @@ defmodule ElixirBookshelf.BookTest do
 
   describe "changeset/2" do
     test "valid changeset with all fields" do
+      author = insert(:author)
+
       changeset =
         Book.changeset(%Book{}, %{
           title: "On Basilisk Station",
-          word_count: 12_348
+          word_count: 12_348,
+          author_id: author.id
         })
 
       assert changeset.valid?
       assert changeset.changes.title == "On Basilisk Station"
       assert changeset.changes.word_count == 12_348
+      assert changeset.changes.author_id == author.id
     end
 
-    test "valid changeset without word_count" do
+    test "valid changeset without word_count and author_id" do
       changeset = Book.changeset(%Book{}, %{title: "On Basilisk Station"})
 
       assert changeset.valid?
       assert changeset.changes == %{title: "On Basilisk Station"}
+    end
+
+    test "valid changeset with title and author_id only" do
+      author = insert(:author)
+      changeset = Book.changeset(%Book{}, %{title: "On Basilisk Station", author_id: author.id})
+
+      assert changeset.valid?
+      assert changeset.changes.title == "On Basilisk Station"
+      assert changeset.changes.author_id == author.id
     end
 
     test "invalid changeset without title" do
