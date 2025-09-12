@@ -21,6 +21,8 @@ defmodule ElixirBookshelfWeb.Router do
     get "/", BookController, :index
     resources "/books", BookController, only: [:index, :show]
     
+    get "/bookshelf", CollectionController, :index
+    
     get "/register", UserController, :new
     post "/register", UserController, :create
     
