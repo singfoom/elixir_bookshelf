@@ -1,7 +1,7 @@
 defmodule ElixirBookshelf.BooksTest do
   use ElixirBookshelf.DataCase
 
-  alias ElixirBookshelf.Books
+  alias ElixirBookshelf.{Books, Repo}
   import ElixirBookshelf.Factory
 
   describe "list_books/0" do
@@ -65,6 +65,55 @@ defmodule ElixirBookshelf.BooksTest do
       assert book.word_count == 50_000
     end
 
+    test "creates a book with author_id" do
+      author = insert(:author)
+      attrs = %{title: "Test Book", word_count: 50_000, author_id: author.id}
+
+      {:ok, book} = Books.create_book(attrs)
+
+      assert book.title == "Test Book"
+      assert book.word_count == 50_000
+      assert book.author_id == author.id
+    end
+
+    test "creates a book with nested author attributes" do
+      attrs = %{
+        title: "Test Book",
+        word_count: 50_000,
+        author: %{first_name: "Test", last_name: "Author"}
+      }
+
+      {:ok, book} = Books.create_book(attrs)
+
+      assert book.title == "Test Book"
+      assert book.word_count == 50_000
+      assert book.author_id != nil
+
+      # Verify author was created
+      book = Books.get_book(book.id) |> Repo.preload(:author)
+      assert book.author.first_name == "Test"
+      assert book.author.last_name == "Author"
+    end
+
+    test "returns error when nested author attributes are invalid" do
+      attrs = %{
+        title: "Test Book",
+        word_count: 50_000,
+        author: %{first_name: "", last_name: ""}
+      }
+
+      {:error, changeset} = Books.create_book(attrs)
+
+      assert changeset.valid? == false
+
+      author_errors =
+        changeset.changes
+        |> get_in([:author])
+        |> errors_on()
+
+      assert author_errors != nil
+    end
+
     test "returns error changeset with invalid attributes" do
       attrs = %{title: "", word_count: -1}
 
@@ -90,6 +139,17 @@ defmodule ElixirBookshelf.BooksTest do
 
       assert updated_book.title == "Updated Title"
       assert updated_book.word_count == 75_000
+    end
+
+    test "updates book author_id" do
+      author = insert(:author)
+      book = insert(:book, title: "Original Title")
+      attrs = %{author_id: author.id}
+
+      {:ok, updated_book} = Books.update_book(book, attrs)
+
+      assert updated_book.author_id == author.id
+      assert updated_book.title == "Original Title"
     end
 
     test "returns error changeset with invalid attributes" do

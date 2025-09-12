@@ -6,6 +6,8 @@ defmodule ElixirBookshelf.Author do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias ElixirBookshelf.Book
+
   @type t :: %__MODULE__{
           first_name: String.t(),
           last_name: String.t()
@@ -15,6 +17,7 @@ defmodule ElixirBookshelf.Author do
   schema "authors" do
     field :first_name, :string
     field :last_name, :string
+    has_many :books, Book
     timestamps(type: :utc_datetime)
   end
 
