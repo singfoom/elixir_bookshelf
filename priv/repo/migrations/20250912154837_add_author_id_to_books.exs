@@ -1,6 +1,6 @@
 defmodule ElixirBookshelf.Repo.Migrations.AddAuthorIdToBooks do
   use Ecto.Migration
-  # excellent_migrations:safety-assured-for-this-file column_dropped
+  # excellent_migrations:safety-assured-for-this-file column_removed
 
   def up do
     alter table(:books) do

@@ -5,7 +5,7 @@ defmodule ElixirBookshelf.BooksTest do
   import ElixirBookshelf.Factory
 
   describe "list_books/0" do
-    test "returns all books" do
+    test "returns all books with authors preloaded" do
       book_1 = insert(:book)
       book_2 = insert(:book)
 
@@ -14,6 +14,12 @@ defmodule ElixirBookshelf.BooksTest do
       assert length(books) == 2
       assert Enum.any?(books, fn c -> c.id == book_1.id end)
       assert Enum.any?(books, fn c -> c.id == book_2.id end)
+      
+      # Verify authors are preloaded
+      Enum.each(books, fn book ->
+        assert book.author != nil
+        assert Ecto.assoc_loaded?(book.author)
+      end)
     end
 
     test "returns empty list when no books exist" do

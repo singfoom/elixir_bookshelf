@@ -9,7 +9,9 @@ defmodule ElixirBookshelf.Books do
 
   @spec list_books() :: list(Book.t())
   def list_books() do
-    Repo.all(Book)
+    Book
+    |> Repo.all()
+    |> Repo.preload(:author)
   end
 
   @spec get_book(String.t()) :: Book.t()
